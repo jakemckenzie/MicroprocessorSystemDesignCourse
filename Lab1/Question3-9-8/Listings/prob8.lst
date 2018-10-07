@@ -1,0 +1,63 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             A_SIMPLE_PROGRAM, CODE, READONL
+Y
+    2 00000000                 ENTRY
+    3 00000000                 EXPORT           __main      ; Jake McKenzie Lab
+                                                             1 Problem 8
+    4 00000000         __main
+    5 00000000 F04F 0700       MOV              R7, #0x0    ; Clear contents of
+                                                             R7
+    6 00000004 F04F 0600       MOV              R6, #0x0    ; Clear contents of
+                                                             R6
+    7 00000008 F04F 0501       MOV              R5, #0x1
+    8 0000000C F06F 0694       MOV              R6, #-149   ; Load -149 into R6
+                                                            
+    9 00000010 F46F 5787       MOV              R7, #-4321  ; Load -4321 into R
+                                                            7
+   10 00000014 4437            ADD              R7, R6, R7  ; -149 + (-4321) = 
+                                                            -4470
+   11 00000016 E7FE    HERE    B                HERE        ; 
+   12 00000018                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\prob8.d -o.\objects\prob8.o -I.\RTE\_Target_1 -IC:\Ke
+il_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\ARM\CMS
+IS\5.4.0\Device\ARM\ARMCM4\Include --predefine="__EVAL SETA 1" --predefine="__U
+VISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" --predefine="ARMCM4_FP SETA
+ 1" --list=.\listings\prob8.lst prob8.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+A_SIMPLE_PROGRAM 00000000
+
+Symbol: A_SIMPLE_PROGRAM
+   Definitions
+      At line 1 in file prob8.s
+   Uses
+      None
+Comment: A_SIMPLE_PROGRAM unused
+HERE 00000016
+
+Symbol: HERE
+   Definitions
+      At line 11 in file prob8.s
+   Uses
+      At line 11 in file prob8.s
+Comment: HERE used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 4 in file prob8.s
+   Uses
+      At line 3 in file prob8.s
+Comment: __main used once
+3 symbols
+338 symbols in table
