@@ -1,0 +1,255 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000 00000100 
+                       STACKSIZE
+                               EQU              0x100
+    2 00000000 00000005 
+                       SLOPE   EQU              5
+    3 00000000 0000000A 
+                       OFFSET  EQU              10
+    4 00000000 00000004 
+                       ARRAYSIZE
+                               EQU              4
+    5 00000000         
+    6 00000000         ; Stack area initialization in RAM memory
+    7 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
+ = 3
+    8 00000000         StackMem
+                               SPACE            STACKSIZE
+    9 00000100         
+   10 00000100         ; Vector table initialization in ROM memory
+   11 00000100                 AREA             RESET, DATA, READONLY
+   12 00000000                 EXPORT           Vectors
+   13 00000000         
+   14 00000000         Vectors
+   15 00000000 00000100        DCD              StackMem + STACKSIZE ; stack po
+                                                            inter for empty sta
+                                                            ck
+   16 00000004 00000000        DCD              Reset_Handler ; reset vector
+   17 00000008                 ALIGN
+   18 00000008         
+   19 00000008         ; An array of variables in RAM
+   20 00000008                 AREA             MyDSTdata, DATA, READWRITE
+   21 00000000 00 00 00 
+              00 00 00 
+              00 00    dst_data
+                               DCW              0, 0, 0, 0
+   22 00000008         
+   23 00000008         ; An array of constants in ROM
+   24 00000008         
+   25 00000008                 AREA             MySRCdata, DATA, READWRITE
+   26 00000000 01 00 02 
+              00 03 00 
+              04 00    src_data
+                               DCW              1, 2, 3, 4
+   27 00000008         ; User program
+   28 00000008                 AREA             | .text|, CODE, READONLY, ALIGN
+ = 2
+   29 00000000                 ENTRY
+   30 00000000                 EXPORT           Reset_Handler
+   31 00000000         Reset_Handler
+   32 00000000 F04F 0204       MOV              r2, #ARRAYSIZE
+   33 00000004 F04F 030A       MOV              r3, #OFFSET
+   34 00000008 F04F 0405       MOV              r4, #SLOPE
+   35 0000000C 4D05            LDR              r5, =src_data
+   36 0000000E 4E06            LDR              r6, =dst_data
+   37 00000010 F835 0B02 
+                       Loop    LDRH             r0, [r5], #2
+   38 00000014 FB00 3004       MLA              r0, r0, r4, r3
+   39 00000018 F826 2B01       STRH             r2, [r6], #1
+   40 0000001C 1E52            SUBS             r2, r2, #1
+   41 0000001E D1F7            BNE              Loop
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   42 00000020         Loop_Forever
+   43 00000020 E7FE            B                Loop_Forever
+   44 00000022                 END
+              00 00 00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\prob1.d -o.\objects\prob1.o -I.\RTE\_Target_1 -IC:\Ke
+il_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\ARM\CMS
+IS\5.4.0\Device\ARM\ARMCM4\Include --predefine="__EVAL SETA 1" --predefine="__U
+VISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" --predefine="ARMCM4_FP SETA
+ 1" --list=.\listings\prob1.lst prob1.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+STACK 00000000
+
+Symbol: STACK
+   Definitions
+      At line 7 in file prob1.s
+   Uses
+      None
+Comment: STACK unused
+StackMem 00000000
+
+Symbol: StackMem
+   Definitions
+      At line 8 in file prob1.s
+   Uses
+      At line 15 in file prob1.s
+Comment: StackMem used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RESET 00000000
+
+Symbol: RESET
+   Definitions
+      At line 11 in file prob1.s
+   Uses
+      None
+Comment: RESET unused
+Vectors 00000000
+
+Symbol: Vectors
+   Definitions
+      At line 14 in file prob1.s
+   Uses
+      At line 12 in file prob1.s
+Comment: Vectors used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MyDSTdata 00000000
+
+Symbol: MyDSTdata
+   Definitions
+      At line 20 in file prob1.s
+   Uses
+      None
+Comment: MyDSTdata unused
+dst_data 00000000
+
+Symbol: dst_data
+   Definitions
+      At line 21 in file prob1.s
+   Uses
+      At line 36 in file prob1.s
+Comment: dst_data used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MySRCdata 00000000
+
+Symbol: MySRCdata
+   Definitions
+      At line 25 in file prob1.s
+   Uses
+      None
+Comment: MySRCdata unused
+src_data 00000000
+
+Symbol: src_data
+   Definitions
+      At line 26 in file prob1.s
+   Uses
+      At line 35 in file prob1.s
+Comment: src_data used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+ .text 00000000
+
+Symbol:  .text
+   Definitions
+      At line 28 in file prob1.s
+   Uses
+      None
+Comment:  .text unused
+Loop 00000010
+
+Symbol: Loop
+   Definitions
+      At line 37 in file prob1.s
+   Uses
+      At line 41 in file prob1.s
+Comment: Loop used once
+Loop_Forever 00000020
+
+Symbol: Loop_Forever
+   Definitions
+      At line 42 in file prob1.s
+   Uses
+      At line 43 in file prob1.s
+Comment: Loop_Forever used once
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 31 in file prob1.s
+   Uses
+      At line 16 in file prob1.s
+      At line 30 in file prob1.s
+
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+ARRAYSIZE 00000004
+
+Symbol: ARRAYSIZE
+   Definitions
+      At line 4 in file prob1.s
+   Uses
+      At line 32 in file prob1.s
+Comment: ARRAYSIZE used once
+OFFSET 0000000A
+
+Symbol: OFFSET
+   Definitions
+      At line 3 in file prob1.s
+   Uses
+      At line 33 in file prob1.s
+Comment: OFFSET used once
+SLOPE 00000005
+
+Symbol: SLOPE
+   Definitions
+      At line 2 in file prob1.s
+   Uses
+      At line 34 in file prob1.s
+Comment: SLOPE used once
+STACKSIZE 00000100
+
+Symbol: STACKSIZE
+   Definitions
+      At line 1 in file prob1.s
+   Uses
+      At line 8 in file prob1.s
+      At line 15 in file prob1.s
+
+4 symbols
+353 symbols in table
