@@ -1,0 +1,98 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             A_SIMPLE_PROGRAM, CODE, READONL
+Y
+    2 00000000                 ENTRY
+    3 00000000                 EXPORT           __main      ; Jake Mckenzie Lab
+                                                             1 problem 5.8.5
+    4 00000000 FEBBAAAA 
+              12340000 
+              88881111 TABLE   DCD              0xFEBBAAAA, 0x12340000, 0x88881
+111 
+                                                            ; Loading values in
+                                                            to the table
+    5 0000000C 00000013 
+              80808080 
+              FFFF0000         DCD              0x00000013, 0x80808080, 0xFFFF0
+000 
+                                                            ;
+    6 00000018         __main
+    7 00000018 4906            LDR              R1, =TABLE  ; Load array
+    8 0000001A         
+    9 0000001A 684A            LDR              R2, [R1, #4] ; R2 <- 0xFEBBAAAA
+                                                            
+   10 0000001C 4613            MOV              R3, R2      ; R3 <- R2
+   11 0000001E         
+   12 0000001E 684A            LDR              R2, [R1, #4] 
+                                                            ; R2 <- 0x12340000 
+                                                            
+   13 00000020 4413            ADD              R3, R3, R2  ; R3 <- R2
+   14 00000022         
+   15 00000022 684A            LDR              R2, [R1, #4] ; R2 <- 0x88881111
+                                                            
+   16 00000024 4413            ADD              R3, R3, R2  ; R3 <- R2
+   17 00000026         
+   18 00000026 684A            LDR              R2, [R1, #4] ; R2 <- 0x00000013
+                                                            
+   19 00000028 4413            ADD              R3, R3, R2  ; R3 <- R2
+   20 0000002A         
+   21 0000002A 684A            LDR              R2, [R1, #4] ; R2 <- 0x80808080
+                                                            
+   22 0000002C 4413            ADD              R3, R3, R2  ; R3 <- R2
+   23 0000002E         
+   24 0000002E 684A            LDR              R2, [R1, #4] ; R2 <- 0xFFFF0000
+                                                            
+   25 00000030 4413            ADD              R3, R3, R2  ; R3 <- R2
+   26 00000032 E7FE    HERE    B                HERE
+   27 00000034                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\prob5.d -o.\objects\prob5.o -I.\RTE\_Target_1 -IC:\Ke
+il_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\ARM\CMS
+IS\5.4.0\Device\ARM\ARMCM4\Include --predefine="__EVAL SETA 1" --predefine="__U
+VISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" --predefine="ARMCM4_FP SETA
+ 1" --list=.\listings\prob5.lst prob5.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+A_SIMPLE_PROGRAM 00000000
+
+Symbol: A_SIMPLE_PROGRAM
+   Definitions
+      At line 1 in file prob5.s
+   Uses
+      None
+Comment: A_SIMPLE_PROGRAM unused
+HERE 00000032
+
+Symbol: HERE
+   Definitions
+      At line 26 in file prob5.s
+   Uses
+      At line 26 in file prob5.s
+Comment: HERE used once
+TABLE 00000000
+
+Symbol: TABLE
+   Definitions
+      At line 4 in file prob5.s
+   Uses
+      At line 7 in file prob5.s
+Comment: TABLE used once
+__main 00000018
+
+Symbol: __main
+   Definitions
+      At line 6 in file prob5.s
+   Uses
+      At line 3 in file prob5.s
+Comment: __main used once
+4 symbols
+341 symbols in table
