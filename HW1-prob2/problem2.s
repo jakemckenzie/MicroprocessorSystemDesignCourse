@@ -18,7 +18,7 @@ loop
 		CMP R1, #0 					; First enumerate the number of
 		BEQ copy					; elements in the source array
 		ADD R4, #1
-		LDRB R1, [R0, #1]!
+		LDRB R1, [R0, #1]!;load R1 from ea<>
 		B loop	
 copy
 		CMP R4, #0
@@ -26,7 +26,7 @@ copy
 copy1
 		LDRB R1, [R0 , #-1]! 		; Start with the last element of
 		STRB R1, [R2] 				; source array and store element
-		ADD R2, #1 				; by element
+		ADD R2, #1 					; by element
 		SUBS R4, #1
 		BNE copy1
 End_Prog
