@@ -16,8 +16,5 @@
  */
 #define CMSIS_device_header "ARMCM4_FP.h"
 
-#define RTE_FileSystem_Core             /* File System Core */
-          #define RTE_FileSystem_LFN              /* File System with Long Filename support */
-          #define RTE_FileSystem_Debug            /* File System Debug Version */
 
 #endif /* RTE_COMPONENTS_H */
