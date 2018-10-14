@@ -205,8 +205,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\problem4.s</PathWithFileName>
-      <FilenameWithoutPath>problem4.s</FilenameWithoutPath>
+      <PathWithFileName>.\problem4a.s</PathWithFileName>
+      <FilenameWithoutPath>problem4a.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

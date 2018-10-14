@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>problem4</OutputName>
+          <OutputName>problem4a</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -383,9 +383,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>problem4.s</FileName>
+              <FileName>problem4a.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\problem4.s</FilePath>
+              <FilePath>.\problem4a.s</FilePath>
             </File>
           </Files>
         </Group>

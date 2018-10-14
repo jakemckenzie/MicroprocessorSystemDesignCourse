@@ -1,12 +1,12 @@
 		AREA prog, CODE, READONLY
 		ALIGN	
-		EXPORT __main		;Jake McKenzie numW
+		EXPORT __main		;Jake McKenzie
 		ENTRY
 __main
 		LDR R0, =src		;initialize src[]
 		LDRB R2, [R0]		;post increment load register
 		MOV R1, #0x0
-		MOV R3, #0x20
+		MOV R3, #0x10
 loop	
 		CMP R2, #0
 		BEQ endloop
@@ -20,6 +20,6 @@ endloop
 STOP	B STOP
 		ALIGN
 		AREA A, DATA, READONLY
-src		DCB "This is a paragraph.\n",0
+src		DCB "This is a paragraph.", 0x10 ,0
 		ALIGN
 		END
