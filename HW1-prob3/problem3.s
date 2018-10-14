@@ -6,13 +6,15 @@ __main
 		LDR R0 , =src
 		LDR R2 , =dst
 		LDRB R1 , [R0]
+		
 		MOV R3, #0xA
 		MOV R4, #0x41
 		CMP R3, R1
-		ITT EQ
-		STRB R4, [R2]
+		IT EQ
+		STRBEQ R4, [R2]
+		
 STOP	B STOP
-
+		ALIGN
 		AREA A,DATA,READONLY
 src 	DCB 0xA, 0x5, 0xF, 0xB, 0x3
 		ALIGN

@@ -1,0 +1,117 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;AREA STACK, NOINIT, READWRITE, ALIGN =3
+    2 00000000                 AREA             prog, CODE, READONLY
+    3 00000000                 EXPORT           __main
+    4 00000000                 ENTRY
+    5 00000000         __main
+    6 00000000 4805            LDR              R0 , =src
+    7 00000002 4A06            LDR              R2 , =dst
+    8 00000004 7801            LDRB             R1 , [R0]
+    9 00000006         
+   10 00000006 F04F 030A       MOV              R3, #0xA
+   11 0000000A F04F 0441       MOV              R4, #0x41
+   12 0000000E 428B            CMP              R3, R1
+   13 00000010 BF08            IT               EQ
+   14 00000012 7014            STRBEQ           R4, [R2]
+   15 00000014         
+   16 00000014 E7FE    STOP    B                STOP
+   17 00000016 00 00           ALIGN
+   18 00000018 00000000 
+              00000000         AREA             A,DATA,READONLY
+   19 00000000 0A 05 0F 
+              0B 03    src     DCB              0xA, 0x5, 0xF, 0xB, 0x3
+   20 00000005 00 00 00        ALIGN
+   21 00000008                 AREA             Z, DATA, READWRITE
+   22 00000000 00 00 00 
+              00 00    dst     DCB              0x0, 0x0, 0x0, 0x0, 0x0
+   23 00000005 00 00 00        ALIGN
+   24 00000008                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\problem3.d -o.\objects\problem3.o -I.\RTE\_Target_1 -
+IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\A
+RM\CMSIS\5.4.0\Device\ARM\ARMCM4\Include --predefine="__EVAL SETA 1" --predefin
+e="__UVISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" --predefine="ARMCM4_F
+P SETA 1" --list=.\listings\problem3.lst problem3.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+STOP 00000014
+
+Symbol: STOP
+   Definitions
+      At line 16 in file problem3.s
+   Uses
+      At line 16 in file problem3.s
+Comment: STOP used once
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 5 in file problem3.s
+   Uses
+      At line 3 in file problem3.s
+Comment: __main used once
+prog 00000000
+
+Symbol: prog
+   Definitions
+      At line 2 in file problem3.s
+   Uses
+      None
+Comment: prog unused
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+A 00000000
+
+Symbol: A
+   Definitions
+      At line 18 in file problem3.s
+   Uses
+      None
+Comment: A unused
+src 00000000
+
+Symbol: src
+   Definitions
+      At line 19 in file problem3.s
+   Uses
+      At line 6 in file problem3.s
+Comment: src used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Z 00000000
+
+Symbol: Z
+   Definitions
+      At line 21 in file problem3.s
+   Uses
+      None
+Comment: Z unused
+dst 00000000
+
+Symbol: dst
+   Definitions
+      At line 22 in file problem3.s
+   Uses
+      At line 7 in file problem3.s
+Comment: dst used once
+2 symbols
+344 symbols in table
