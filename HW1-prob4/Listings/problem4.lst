@@ -6,22 +6,30 @@ ARM Macro Assembler    Page 1
 
     1 00000000                 AREA             prog, CODE, READONLY
     2 00000000                 ALIGN
-    3 00000000                 EXPORT           __main      ;Jake McKenzie numW
-                                                            
+    3 00000000                 EXPORT           __main      ; Jake McKenzie num
+                                                            W
     4 00000000                 ENTRY
     5 00000000         __main
-    6 00000000 4807            LDR              R0, =src    ;initialize src[]
-    7 00000002 7802            LDRB             R2, [R0]    ;post increment loa
-                                                            d register
-    8 00000004 F04F 0100       MOV              R1, #0x0
-    9 00000008 F04F 0320       MOV              R3, #0x20
+    6 00000000 4807            LDR              R0, =src    ; initialize src[]
+    7 00000002 7802            LDRB             R2, [R0]    ; post increment lo
+                                                            ad register
+    8 00000004 F04F 0100       MOV              R1, #0x0    ; Making sure R1 is
+                                                             0 at the start, mo
+                                                            stly for debugging 
+                                                            purposes
+    9 00000008 F04F 0320       MOV              R3, #0x20   ; R3 <- "space char
+                                                            acter" for counting
+                                                            
    10 0000000C         loop
-   11 0000000C 2A00            CMP              R2, #0
+   11 0000000C 2A00            CMP              R2, #0      ; while R2 != 0 do 
+                                                            loop
    12 0000000E D005            BEQ              endloop
-   13 00000010 4293            CMP              R3, R2
-   14 00000012 BF08            IT               EQ
+   13 00000010 4293            CMP              R3, R2      ; checks to see if 
+                                                            the current charact
+                                                            er
+   14 00000012 BF08            IT               EQ          ; is a space.
    15 00000014 3101            ADDEQ            R1, #1
-   16 00000016 F810 2B01       LDRB             R2, [R0], #1
+   16 00000016 F810 2B01       LDRB             R2, [R0], #1 ; count ++ 
    17 0000001A E7F7            B                loop
    18 0000001C         endloop
    19 0000001C         
