@@ -1,10 +1,7 @@
 //toggling D3 (PF4) on board
-//	Address		7		6		5		5		4		3		2		1
-//	$400F.E108	--		--		GPIOF	GPIOE	GPIOD	GPIOC	GPIOB	GPIOA
-# define SYSCTL_RCGC2_R (*((volatile unsigned long *)0x400FE608 )) 
-//	
+
+# define SYSCTL_RCGC2_R (*((volatile unsigned long *)0x400FE608 ))
 # define SYSCTL_RCGC2_GPIOF 0x00000020 // Port F clock gating control
-//	$400F.E108	--		--		DATA	DATA	DATA	DATA	DATA	DATA
 # define GPIO_PORTF_AHB_DATA_R (*(( volatile unsigned long *)0x4005D3FC))
 # define GPIO_PORTF_AHB_DIR_R (*(( volatile unsigned long *)0x4005D400))
 # define GPIO_PORTF_AHB_DEN_R (*(( volatile unsigned long *)0x4005D51C))
@@ -36,9 +33,10 @@ int main (){
 		GPIO_PORTF_AHB_DATA_R ^= GPIO_PORTF_PIN4; 
 	
 		// delay loop
-		j = 0;
-		while (j != DELAY_VALUE) { 
-			j++;
-		}
+			j = 0;
+			while (j != DELAY_VALUE) {
+				j++;
+			}
 	} 
 }
+
