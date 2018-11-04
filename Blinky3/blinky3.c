@@ -17,7 +17,7 @@ void Delay( unsigned long counter );
 
 // main program
 int main() {
-    static char flag = 0;
+    volatile char flag = 0;
 
     // enable the clock for port N
     SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R12;
@@ -50,6 +50,6 @@ int main() {
 void Delay (unsigned long counter) {
     unsigned long i = 0;
     while (i != counter) {
-        counter++;
+        i++;
     }
 }
