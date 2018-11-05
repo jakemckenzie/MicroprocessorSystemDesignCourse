@@ -35,8 +35,6 @@
 #include "tm4c1294ncpdt.h"
 
 #define LEDS                    (*((volatile uint32_t *)0x4006403C))
-
-
 #define PJ0       (*((volatile uint32_t *)0x40060004))
 #define PJ1       (*((volatile uint32_t *)0x40060008))
 #define SWITCHES  (*((volatile uint32_t *)0x4006000C))
@@ -44,11 +42,6 @@
 #define SW2_PRESSED             0x01  // value read from location SWITCHES when just SW2 is pressed
 #define BOTH_PRESSED            0x00  // value read from location SWITCHES when both switches are pressed
 #define NO_PRESSED              0x03  // value read from location SWITCHES when neither switch is pressed
-
-//#define SYSCTL_RCGCGPIO_R8      0x00000100  // GPIO Port J Run Mode Clock
-                                            // Gating Control
-
-//#define SYSCTL_PRGPIO_R8        0x00000100  // GPIO Port J Peripheral Ready
 
 void GPIO_Init(void){
                                    // activate clock for Port N
