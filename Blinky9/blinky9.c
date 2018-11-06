@@ -18,6 +18,12 @@
 #define BOTH_PRESSED            0x00  // value read from location SWITCHES when both switches are pressed
 #define NO_PRESSED              0x03  // value read from location SWITCHES when neither switch is pressed
 
+void init_GPIO_N(void);
+void init_GPIO_J(void);
+uint32_t input_from_Port_J(void);
+void LED_state_machine(int led_id);
+void turn_off_LEDS(void);
+void delay(void);
 /*
  * Initialization of GPIO Port N, which are for the LEDS.
  */
@@ -66,22 +72,41 @@ void init_GPIO_J(void) {
  * 0x01 if switch 2 is pressed (so stupid TI f**k you)
  * 0x02 if switch 1 is pressed
  * 0x03 if both switch 1 and 2 are pressed 
+ * 
+ * @returns only the input pertinate to switch 1 and 2
  */
 uint32_t input_from_Port_J(void) {
     return (GPIO_PORTJ_AHB_DATA_R & 0x03);
 }
-
+/*
+ * This is my state machine for the leds.
+ * @param led_id input variable state machine with three
+ * states controlled by "state_1 | state_2"
+ */
 void LED_state_machine(int led_id) {
     switch(led_id) {
-				case 1:
-            LEDS = 1;
+		case 1: {
+            LEDS = 0;
+			delay();
+			LEDS = 1;
+			delay();
             break;
-        case 2:
-            LEDS = 2;
+        }
+        case 2: {
+            LEDS = 0;
+			delay();
+			LEDS = 2;
+			delay();
             break;
-        case 3:
-            LEDS = 3;
+        }
+        case 3: {
+            LEDS = 0;
+			delay();
+			LEDS = 3;
+			delay();
             break;
+        }
+            
     }
 }
 /*
@@ -95,7 +120,7 @@ void turn_off_LEDS(void) {
  * I made it a power of 2 instead.
  */
 void delay(void) {
-    uint32_t count = (1<<15);
+    uint32_t count = (1<<17);
     uint32_t i = 0;
     while ((++i) != count) { };
 }
@@ -105,39 +130,68 @@ int main(void) {
     init_GPIO_N();
     //Initialization of GPIO Port J,
     init_GPIO_J();
-		// initialize LED_state press 1
-		uint32_t state_1 = 0x00;
-		// initialize LED_state press 2
-		uint32_t state_2 = 0x00;
+	// initialize LED_state press 1
+	uint32_t state_1 = 0x00;
+	// initialize LED_state press 2
+	uint32_t state_2 = 0x00;
     // initialize flag 1 to control flow to zero
     uint32_t flag1 = 0x00;
     // initialize flag 2 to control flow to zero
     uint32_t flag2 = 0x00;
-		// initialize LEDS to off
-		turn_off_LEDS();
+	// initialize LEDS to off
+	turn_off_LEDS();
+    // NOTES FROM NOV 6, 2018
+    // THREADS: defined as the path of action of software as it executes.
+    // PROCESS: defined as the action of software as it executes.
+    // threads share access to I/O, system registers, and globals while 
+    // processes do not.
+    // Thread Mode: used to execute application software. The processor 
+    // enters Thread Mode when it comes out of reset.
+    // Handler mode: used to handle exceptions. When processor has 
+    // finished exception processing, it returns to thread mode.
+    // unpriveleged - mode where you have limited access to MSR, CPS, NVIC,
+    // or system control block.
+    // priveleged - access to errything.
     while (1) {
+        // I probably didn't need to use a flag in this case but I did.
+        // Essentially this checks for whether the button was pressed
+        // I had major bug with this, essentially it worked right immediately
+        // but if both leds were flashing (case LEDS = 3 in the FSM) the 
+        // LED I was turning off would stay high because it was getting 
+        // caught high. I fixed this by changing to have the looping 
+        // FSM change from high to low so that if it re-entered this 
+        // statement it would get XOR'd and turn off.  
         if ((input_from_Port_J() == SW1_PRESSED) && (flag1 == 0)) {
-            delay();
-						// TI IS SO STUPID WHY WOULD YOU MAKE LED 1 0x02 and LED 2 0x01
-						state_1 ^= 0x02;
-						if ((state_1 | state_2 ) > 0) {
-							LED_state_machine(state_1 | state_2);
-						} else {
-							turn_off_LEDS();
-						}
+            //delay();
+			// TI IS SO STUPID WHY WOULD YOU MAKE LED 1 0x02 and LED 2 0x01
+            state_1 ^= 0x02;
+            while (input_from_Port_J() == SW1_PRESSED) {
+                LEDS = (state_1 | state_2);
+            }
+			if (state_1 == 0x02) {
+				LEDS = 0x02;
+				//LED_state_machine(state_1 | state_2);
+			} else {
+			    turn_off_LEDS();
+			}
             flag1 = 1;
         } 
         if ((input_from_Port_J() == SW2_PRESSED) && (flag2 == 0)) {
-            delay();
-						state_2 ^= 0x01;
-						if ((state_1 | state_2 ) > 0) {
-							LED_state_machine(state_1 | state_2);
-						} else {
-							turn_off_LEDS();
-						}
+            //delay();
+			state_2 ^= 0x01;
+			while (input_from_Port_J() == SW2_PRESSED) {
+                LEDS = (state_1 | state_2);
+            }
+            if (state_2== 0x01) {
+				LEDS = 0x01;
+				//LED_state_machine(state_1 | state_2);
+			} else {
+				turn_off_LEDS();
+			}
             flag2 = 1;
         }
-				delay();
+		LED_state_machine(state_1 | state_2);
+		delay();
         if(input_from_Port_J() == NO_PRESSED) {
             flag1 = 0;
             flag2 = 0;

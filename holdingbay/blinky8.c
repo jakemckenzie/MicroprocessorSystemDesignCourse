@@ -17,7 +17,10 @@
 #define SW2_PRESSED             0x01  // value read from location SWITCHES when just SW2 is pressed
 #define BOTH_PRESSED            0x00  // value read from location SWITCHES when both switches are pressed
 #define NO_PRESSED              0x03  // value read from location SWITCHES when neither switch is pressed
+uint32_t input = 								0x00;
 
+void flash_led_1(int led_id);
+void flash_led_2(int led_id);
 /*
  * Initialization of GPIO Port N, which are for the LEDS.
  */
@@ -70,18 +73,77 @@ void init_GPIO_J(void) {
 uint32_t input_from_Port_J(void) {
     return (GPIO_PORTJ_AHB_DATA_R & 0x03);
 }
+/*
+ * Around the same delay you gave us in your blink example. 
+ * I made it a power of 2 instead.
+ */
+void delay(void) {
+    uint32_t count = (1<<18);
+    uint32_t i = 0;
+    while ((++i) != count) {
+				input = input_from_Port_J();
+		}
+}
+void flash_led_both(int led_id) {
+		while (input != SW2_PRESSED || input != SW1_PRESSED) {
+				input = input_from_Port_J();
+				delay();
+				led_id ^= 0x03;
+				led_id &= 0x03;
+                LEDS = led_id;
+				if (input == SW2_PRESSED) {
+						led_id = 0x01;
+						flash_led_1(led_id);
+				}
+				if (input == SW1_PRESSED) {
+						led_id = 0x02;
+						flash_led_1(led_id);
+				}
+		}
+}
+
+void flash_led_1(int led_id) {
+		while (input != SW2_PRESSED) {
+				input = input_from_Port_J();
+				delay();
+				led_id ^= 0x01;
+				led_id &= 0x03;
+                LEDS = led_id;
+				if (input == SW1_PRESSED) {
+						flash_led_both(led_id);
+				}
+		}
+}
+
+void flash_led_2(int led_id) {
+		while (input != SW1_PRESSED) {
+				input = input_from_Port_J();
+				delay();
+				led_id ^= 0x02;
+                led_id &= 0x03;
+				LEDS = led_id;
+				if (input == SW2_PRESSED) {
+						flash_led_both(led_id);
+				}
+		}
+}
+
+
 
 void LED_state_machine(int led_id) {
-    switch(led_id) {
-				case 1:
-            LEDS = 1;
-            break;
-        case 2:
-            LEDS = 2;
-            break;
-        case 3:
-            LEDS = 3;
-            break;
+		switch(led_id) {
+		    case 1:
+                //LEDS = 1;
+			    flash_led_1(led_id);
+                break;
+            case 2:
+                //LEDS = 2;
+                flash_led_2(led_id);
+				break;
+        //case 3:
+        //    flash_led_both(led_id);
+				//		//LEDS = 3;
+        //    break;
     }
 }
 /*
@@ -90,15 +152,7 @@ void LED_state_machine(int led_id) {
 void turn_off_LEDS(void) {
     LEDS = 0x00;
 }
-/*
- * Around the same delay you gave us in your blink example. 
- * I made it a power of 2 instead.
- */
-void delay(void) {
-    uint32_t count = (1<<15);
-    uint32_t i = 0;
-    while ((++i) != count) { };
-}
+
 
 int main(void) {
     //Initialization of GPIO Port N,
@@ -116,28 +170,31 @@ int main(void) {
 		// initialize LEDS to off
 		turn_off_LEDS();
     while (1) {
-        if ((input_from_Port_J() == SW1_PRESSED) && (flag1 == 0)) {
-            delay();
+				input = input_from_Port_J();
+        if ((input == SW1_PRESSED) && (flag1 == 0)) {
+            //delay();
 						// TI IS SO STUPID WHY WOULD YOU MAKE LED 1 0x02 and LED 2 0x01
 						state_1 ^= 0x02;
 						if ((state_1 | state_2 ) > 0) {
+							LEDS = 2;
 							LED_state_machine(state_1 | state_2);
 						} else {
 							turn_off_LEDS();
 						}
             flag1 = 1;
         } 
-        if ((input_from_Port_J() == SW2_PRESSED) && (flag2 == 0)) {
-            delay();
+        if ((input == SW2_PRESSED) && (flag2 == 0)) {
+            //delay();
 						state_2 ^= 0x01;
 						if ((state_1 | state_2 ) > 0) {
+							LEDS = 1;
 							LED_state_machine(state_1 | state_2);
 						} else {
 							turn_off_LEDS();
 						}
             flag2 = 1;
         }
-				delay();
+				//delay();
         if(input_from_Port_J() == NO_PRESSED) {
             flag1 = 0;
             flag2 = 0;
