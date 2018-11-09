@@ -38,6 +38,7 @@
 #define NO_PRESSED              0x03  // value read from location SWITCHES when neither switch is pressed
 
 void init_GPIO_N(void);
+void init_GPIO_F(void);
 void init_GPIO_J(void);
 uint32_t input_from_Port_J(void);
 void LED_state_machine(int led_id);
@@ -61,6 +62,19 @@ void init_GPIO_N(void){
     GPIO_PORTN_PCTL_R = (GPIO_PORTN_PCTL_R & 0xFFFF0000) + 0x00000000;
     // disable analog functionality on PN3-0
     GPIO_PORTN_AMSEL_R &= ~0x0F;     
+}
+/*
+ * Initialization of GPIO Port F, which are for the other LEDS.
+ */
+void init_GPIO_F(void) {
+    // Enable the clock for port F 
+	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
+	// enable port F pin 4 as digital output 
+	GPIO_PORTF_AHB_DEN_R |= GPIO_PORTF_PIN4; 
+	// Digital enable for PF4 
+	GPIO_PORTF_AHB_DIR_R |= GPIO_PORTF_PIN4; 
+	// disable the alternate functionality
+	GPIO_PORTF_AHB_AFSEL_R &= GPIO_PORTF_AHB_AFSEL_DIS;
 }
 
 /*
@@ -134,29 +148,29 @@ void LED_state_machine(int led_id) {
     // }
     switch(led_id) {
         case 0x01: {
-            LEDS = 0x01;
+            LEDS = 0x02;
             delay();
             break;
         }
         case 0x02: {
-            LEDS = 0x02;
+            LEDS = 0x01;
             delay();
             LEDS = 0x00;
             delay();
             break;
         }
         case 0x03: {
-            LEDS = 0x02;
-            delay();
-            LEDS = 0x08;
-            delay();
+            // LEDS = 0x01;
+            // delay();
+            // LEDS = 0x08;
+            // delay();
             break;
         }
         case 0x04: {
-            LEDS = 0x0C;
-            delay();
-            
-            delay();
+            // LEDS = 0x0C;
+            // delay();
+            // LEDS = 0x0A;
+            // delay();
             break;
         }
     }
@@ -180,6 +194,8 @@ void delay(void) {
 int main(void) {
     //Initialization of GPIO Port N,
     init_GPIO_N();
+    //Initialization of GPIO Port F,
+    init_GPIO_F();
     //Initialization of GPIO Port J,
     init_GPIO_J();
 	// initialize LED_state press 1
@@ -189,9 +205,10 @@ int main(void) {
     // initialize flag 1 to control flow to zero
     uint32_t flag1 = 0x00;
     // initialize flag 2 to control flow to zero
-    uint32_t flag2 = 0x00;
+    // uint32_t flag2 = 0x00;
 	// initialize LEDS to off
 	turn_off_LEDS();
+    state_1 = 0x00;
     // NOTES FROM NOV 6, 2018
     // THREADS: defined as the path of action of software as it executes.
     // PROCESS: defined as the action of software as it executes.
@@ -213,15 +230,10 @@ int main(void) {
         // caught high. I fixed this by changing to have the looping 
         // FSM change from high to low so that if it re-entered this 
         // statement it would get XOR'd and turn off.  
-        state_1 = 0x00;
+        
         if ((input_from_Port_J() == SW1_PRESSED) && (flag1 == 0)) {
             //delay();
-			// TI IS SO STUPID WHY WOULD YOU MAKE LED 1 0x02 and LED 2 0x01
-            if (state_1 < 0x05) {
-                state_1++;
-            } else {
-                state_1 = 0x01;
-            }
+            state_1 = (state_1 < 0x04) ? (state_1 + 1) : 0x01;
             flag1 = 0x01;
         } 
         // if ((input_from_Port_J() == SW2_PRESSED) && (flag2 == 0)) {
