@@ -19,10 +19,10 @@ int main (){
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOF;
 	
 	// enable port F pin 4 as digital output 
-	GPIO_PORTF_AHB_DEN_R |= GPIO_PORTF_PIN4; 
+	GPIO_PORTF_AHB_DEN_R |= GPIO_PORTF_PIN4 | 0x01; 
 	
 	// Digital enable for PF4 
-	GPIO_PORTF_AHB_DIR_R |= GPIO_PORTF_PIN4; 
+	GPIO_PORTF_AHB_DIR_R |= GPIO_PORTF_PIN4 | 0x01; 
 	
 	// disable the alternate functionality
 	GPIO_PORTF_AHB_AFSEL_R &= GPIO_PORTF_AHB_AFSEL_DIS;
@@ -30,7 +30,7 @@ int main (){
 	// PF4 as output 
 	while (1) { 
 	// Toggle the LED 
-		GPIO_PORTF_AHB_DATA_R ^= GPIO_PORTF_PIN4; 
+		GPIO_PORTF_AHB_DATA_R ^= 0x01; 
 	
 		// delay loop
 			j = 0;
