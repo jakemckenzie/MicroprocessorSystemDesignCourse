@@ -1,65 +1,65 @@
-// Enable Port J&N clock control
-#define SYSCTL_RCGCGPIO_R (*((volatile unsigned long *) 0x400FE608))
-#define SYSCTL_RCGCGPIO_GPIOJN 0x00001100
+#include <stdint.h>
+#include <stdbool.h>
+#include "tm4c1294ncpdt.h"
+#include "sysctl.h"
 
-// GPIO Port N, pin 1
-#define GPIO_PORTN_DIR_R   (*((volatile unsigned long *) 0x40064400))
-#define GPIO_PORTN_DEN_R   (*((volatile unsigned long *) 0x4006451C))
-#define GPIO_PORTN_DATA_R (*((volatile unsigned long *) 0x400643FC))
-
-// GPIO Port J, pin 1
-#define GPIO_PORTJ_DIR_R   (*((volatile unsigned long *) 0x40060400))
-#define GPIO_PORTJ_DEN_R   (*((volatile unsigned long *) 0x4006051C))
-#define GPIO_PORTJ_PUR_R   (*((volatile unsigned long *) 0x40060510))
-#define GPIO_PORTJ_DATA_RD (*((volatile unsigned long *) 0x400603FC))
-
-// Port pin definitions
-#define GPIO_PORTJ_PIN1 0x02
-#define GPIO_PORTN_PIN1 0x02
-
-// Default clock frequency and delay definition
-#define SYSTEM_CLOCK_FREQUENCY     16000000
-#define DELAY_VALUE                SYSTEM_CLOCK_FREQUENCY/1000
+#define LEDS                    (*((volatile uint32_t *)0x4006403C))
+#define PJ1                     (*((volatile uint32_t *)0x40060008))
+#define SW2                     0x01  // value read from location SWITCHES when just SW2 is pressed
 
 //NVIC interrupt enableconfiguration
-#define NVIC_EN1_INT51   0x????????   // Interrupt 51 enable
-
-// IRQ 32 to 63 Set Enable Register
-#define NVIC_EN1_R       (*((volatile unsigned long *) 0xE000E104))
-
-// IRQ 48 to 51 Priority Register
-#define NVIC_PRI12_R     (*((volatile unsigned long *) 0xE000E430))
-
-// DIR      AFSEL   PMC         IS      IBE     IEV     IME     Port mode
-// 0        0       0000        0       0       0       1       Input, falling edge trigger, interrupt
-
-// GPIOPort J Interrupt Configuration
-#define GPIO_PORTJ_IS_R  (*((volatile unsigned long *) 0x40060404))
-#define GPIO_PORTJ_IBE_R (*((volatile unsigned long *) 0x40060408))
-#define GPIO_PORTJ_IEV_R (*((volatile unsigned long *) 0x4006040C))
-#define GPIO_PORTJ_IM_R  (*((volatile unsigned long *) 0x40060410))
-#define GPIO_PORTJ_ICR_R (*((volatile unsigned long *) 0x4006041C))
+#define NVIC_EN1_INT51   0x00080000   // Interrupt 51 enable
+// global state used inside interrupt
+volatile uint32_t state = 0x00;
 
 // Function prototypes
-void Delay ( unsigned long counter );
+void GPIOPortJ_Handler(void);
 void init_GPIO_N(void);
+void init_GPIO_J(void);
+void delay(void);
+void turn_off_LEDS(void);
+uint32_t input_from_Port_J(void);
+void IntGlobalEnable(void);
+void IntGlobalDisable(void);
+void init_Interrupt_Port_J(void);
 
-// user main programint 
-main() {
-
+int main(void) {
+    //Initialization of GPIO Port N,
+    init_GPIO_N();
+    //Initialization of GPIO Port J,
+    init_GPIO_J();
+	// stop the funny business
+    IntGlobalDisable();
+    // Initialization of Port J interrupts
+    init_Interrupt_Port_J();
+    // time for funny business
+    IntGlobalEnable();
     // so that it doesn't end.
-    while(1) {}
+    while(1) {
+
+    }
 }
+
+
 
 // Interrupt service routine for Port J
-void GPIOPortJ_Handler ( void ){
-    GPIO_PORTJ_ICR_R = 0x10;
+void GPIOPortJ_Handler (void) {
+    GPIO_PORTJ_AHB_ICR_R ^= SW2;
+    LEDS ^= 0x01;
 }
 
-// Function Delay implements the delay
-void Delay ( unsigned long counter ){
-    unsigned long i = 0; 
-    for (i =0; i < counter ; i ++);
+/*
+ * switch 1 Port J input states:
+ * 
+ * 0x00 if both switches are pressed.
+ * 0x01 if switch 2 is pressed (so stupid TI f**k you)
+ * 0x02 if switch 1 is pressed
+ * 0x03 if both switch 1 and 2 are pressed 
+ * 
+ * @returns only the input pertinate to switch 1 and 2
+ */
+uint32_t input_from_Port_J(void) {
+    return (GPIO_PORTJ_AHB_DATA_R & 0x03);
 }
 
 /*
@@ -101,4 +101,56 @@ void init_GPIO_J(void) {
     GPIO_PORTJ_AHB_PCTL_R = 0;
     // disable analog functionality on PJ1-0           
     GPIO_PORTJ_AHB_AMSEL_R = 0;                    
+}
+/*
+ * Initialization of GPIO Port J Interrupt. 
+ * 
+ * Information found from Valvano Chapter 12 on interrupts:
+ * 
+ *  DIR      AFSEL   PMC         IS      IBE     IEV     IME    Port mode
+ *  0        0       0000        0       0       0       1      Input, 
+ *                                                              falling edge trigger, 
+ *                                                              interrupt
+ * 
+ * ^ This is for a different board but it made a lot more sense than anything in 
+ * those stupid DOCS by TI
+ * 
+ */
+void init_Interrupt_Port_J(void) {
+    // Interrupt INT 51 enabled in NVIC
+    NVIC_EN1_R |= NVIC_EN1_INT51;
+    // configure GPIOJ interrupt priority as 0
+    NVIC_PRI12_R &= ~0xE0000000;
+    // arm interrupt for PJ1 
+    GPIO_PORTJ_AHB_IM_R |= SW2;
+    // make PJ1 edge-sensitve
+    GPIO_PORTJ_AHB_IS_R &= ~SW2;
+    // disable both edge sentivity for PJ1
+    GPIO_PORTJ_AHB_IBE_R &= ~SW2;
+    // PJ1 falling edge event;
+    GPIO_PORTJ_AHB_IEV_R &= ~SW2;
+}
+
+/*
+ * Around the same delay you gave us in your blink example. 
+ * I made it a power of 2 instead.
+ */
+void delay(void) {
+    uint32_t count = (1<<17);
+    uint32_t i = 0;
+    while ((++i) != count) { };
+}
+
+/*
+ * Globally enabled interrupts
+ */
+void IntGlobalEnable(void) {
+    __asm("    cpsie   i\n");
+}
+
+/*
+ * Globally disabled interrupts
+ */
+void IntGlobalDisable(void) {
+    __asm("    cpsie   i\n");
 }
