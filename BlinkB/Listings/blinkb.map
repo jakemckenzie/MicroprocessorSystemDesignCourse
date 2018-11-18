@@ -257,11 +257,11 @@ Image Symbol Table
     i.IntGlobalEnable                        0x0000044a   Section        0  blinkyb.o(i.IntGlobalEnable)
     i.SystemInit                             0x00000450   Section        0  system_tm4c129.o(i.SystemInit)
     i.init_GPIO_J                            0x00000470   Section        0  blinkyb.o(i.init_GPIO_J)
-    i.init_GPIO_N                            0x000004c0   Section        0  blinkyb.o(i.init_GPIO_N)
-    i.init_Interrupt_Port_J                  0x00000530   Section        0  blinkyb.o(i.init_Interrupt_Port_J)
-    i.main                                   0x00000590   Section        0  blinkyb.o(i.main)
-    x$fpl$fpinit                             0x000005a8   Section       10  fpinit.o(x$fpl$fpinit)
-    $v0                                      0x000005a8   Number         0  fpinit.o(x$fpl$fpinit)
+    i.init_GPIO_N                            0x000004b8   Section        0  blinkyb.o(i.init_GPIO_N)
+    i.init_Interrupt_Port_J                  0x000004fc   Section        0  blinkyb.o(i.init_Interrupt_Port_J)
+    i.main                                   0x0000055c   Section        0  blinkyb.o(i.main)
+    x$fpl$fpinit                             0x00000574   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x00000574   Number         0  fpinit.o(x$fpl$fpinit)
     .data                                    0x20000000   Section        4  system_tm4c129.o(.data)
     .bss                                     0x20000004   Section       96  libspace.o(.bss)
     HEAP                                     0x20000068   Section        0  startup_tm4c129.o(HEAP)
@@ -502,15 +502,15 @@ Image Symbol Table
     __semihosting_library_function           0x00000447   Thumb Code     0  indicate_semi.o(.text)
     IntGlobalEnable                          0x0000044b   Thumb Code     4  blinkyb.o(i.IntGlobalEnable)
     SystemInit                               0x00000451   Thumb Code    20  system_tm4c129.o(i.SystemInit)
-    init_GPIO_J                              0x00000471   Thumb Code    64  blinkyb.o(i.init_GPIO_J)
-    init_GPIO_N                              0x000004c1   Thumb Code    96  blinkyb.o(i.init_GPIO_N)
-    init_Interrupt_Port_J                    0x00000531   Thumb Code    82  blinkyb.o(i.init_Interrupt_Port_J)
-    main                                     0x00000591   Thumb Code    24  blinkyb.o(i.main)
-    _fp_init                                 0x000005a9   Thumb Code    10  fpinit.o(x$fpl$fpinit)
-    __fplib_config_fpu_vfp                   0x000005b1   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fplib_config_pureend_doubles           0x000005b1   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    Region$$Table$$Base                      0x000005b4   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x000005d4   Number         0  anon$$obj.o(Region$$Table)
+    init_GPIO_J                              0x00000471   Thumb Code    54  blinkyb.o(i.init_GPIO_J)
+    init_GPIO_N                              0x000004b9   Thumb Code    52  blinkyb.o(i.init_GPIO_N)
+    init_Interrupt_Port_J                    0x000004fd   Thumb Code    82  blinkyb.o(i.init_Interrupt_Port_J)
+    main                                     0x0000055d   Thumb Code    24  blinkyb.o(i.main)
+    _fp_init                                 0x00000575   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x0000057d   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x0000057d   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    Region$$Table$$Base                      0x00000580   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x000005a0   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_tm4c129.o(.data)
     __libspace_start                         0x20000004   Data          96  libspace.o(.bss)
     __temporary_stack_top$libspace           0x20000064   Data           0  libspace.o(.bss)
@@ -523,9 +523,9 @@ Memory Map of the image
 
   Image Entry point : 0x000002a1
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x000005d8, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x000005a4, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x000005d4, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x000005a0, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -590,28 +590,28 @@ Memory Map of the image
     0x0000044a   0x0000044a   0x00000004   Code   RO            3    i.IntGlobalEnable   blinkyb.o
     0x0000044e   0x0000044e   0x00000002   PAD
     0x00000450   0x00000450   0x00000020   Code   RO           90    i.SystemInit        system_tm4c129.o
-    0x00000470   0x00000470   0x00000050   Code   RO            5    i.init_GPIO_J       blinkyb.o
-    0x000004c0   0x000004c0   0x00000070   Code   RO            6    i.init_GPIO_N       blinkyb.o
-    0x00000530   0x00000530   0x00000060   Code   RO            7    i.init_Interrupt_Port_J  blinkyb.o
-    0x00000590   0x00000590   0x00000018   Code   RO            9    i.main              blinkyb.o
-    0x000005a8   0x000005a8   0x0000000a   Code   RO          232    x$fpl$fpinit        fz_wm.l(fpinit.o)
-    0x000005b2   0x000005b2   0x00000002   PAD
-    0x000005b4   0x000005b4   0x00000020   Data   RO          300    Region$$Table       anon$$obj.o
+    0x00000470   0x00000470   0x00000048   Code   RO            5    i.init_GPIO_J       blinkyb.o
+    0x000004b8   0x000004b8   0x00000044   Code   RO            6    i.init_GPIO_N       blinkyb.o
+    0x000004fc   0x000004fc   0x00000060   Code   RO            7    i.init_Interrupt_Port_J  blinkyb.o
+    0x0000055c   0x0000055c   0x00000018   Code   RO            9    i.main              blinkyb.o
+    0x00000574   0x00000574   0x0000000a   Code   RO          232    x$fpl$fpinit        fz_wm.l(fpinit.o)
+    0x0000057e   0x0000057e   0x00000002   PAD
+    0x00000580   0x00000580   0x00000020   Data   RO          300    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x000005d4, Size: 0x00000004, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x000005a0, Size: 0x00000004, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x000005d4   0x00000004   Data   RW           91    .data               system_tm4c129.o
+    0x20000000   0x000005a0   0x00000004   Data   RW           91    .data               system_tm4c129.o
 
 
-    Execution Region ER_ZI (Exec base: 0x20000004, Load base: 0x000005d8, Size: 0x00000264, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_ZI (Exec base: 0x20000004, Load base: 0x000005a4, Size: 0x00000264, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x20000004        -       0x00000060   Zero   RW          174    .bss                c_w.l(libspace.o)
-    0x20000064   0x000005d8   0x00000004   PAD
+    0x20000064   0x000005a4   0x00000004   PAD
     0x20000068        -       0x00000000   Zero   RW           79    HEAP                startup_tm4c129.o
     0x20000068        -       0x00000200   Zero   RW           78    STACK               startup_tm4c129.o
 
@@ -623,12 +623,12 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       320         46          0          0          0       7380   blinkyb.o
+       268         48          0          0          0       7360   blinkyb.o
        300         22        512          0        512       6076   startup_tm4c129.o
         32         12          0          4          0        795   system_tm4c129.o
 
     ----------------------------------------------------------------------
-       654         80        544          4        512      14251   Object Totals
+       602         82        544          4        512      14231   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          2          0          0          0          0          0   (incl. Padding)
 
@@ -679,15 +679,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-       948         96        544          4        612      14295   Grand Totals
-       948         96        544          4        612      14295   ELF Image Totals
-       948         96        544          4          0          0   ROM Totals
+       896         98        544          4        612      14275   Grand Totals
+       896         98        544          4        612      14275   ELF Image Totals
+       896         98        544          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 1492 (   1.46kB)
+    Total RO  Size (Code + RO Data)                 1440 (   1.41kB)
     Total RW  Size (RW Data + ZI Data)               616 (   0.60kB)
-    Total ROM Size (Code + RO Data + RW Data)       1496 (   1.46kB)
+    Total ROM Size (Code + RO Data + RW Data)       1444 (   1.41kB)
 
 ==============================================================================
 

@@ -44,8 +44,8 @@ int main(void) {
 
 // Interrupt service routine for Port J
 void GPIOPortJ_Handler (void) {
-    GPIO_PORTJ_AHB_ICR_R ^= SW2;
     LEDS ^= 0x01;
+    GPIO_PORTJ_AHB_ICR_R ^= SW2;
 }
 
 /*
@@ -73,13 +73,13 @@ void init_GPIO_N(void) {
     // select PN3 through PN0
     GPIO_PORTN_DIR_R |= 0x0F;
     // disable alternative functions on PN3-0
-    GPIO_PORTN_AFSEL_R &= ~0x0F;
+    //GPIO_PORTN_AFSEL_R &= ~0x0F;
     // enable digital I/O on PN3-0
     GPIO_PORTN_DEN_R |= 0x0F;   
     // configure PN3-0 as GPIO with some added delay for the clock
-    GPIO_PORTN_PCTL_R = (GPIO_PORTN_PCTL_R & 0xFFFF0000) + 0x00000000;
+    //GPIO_PORTN_PCTL_R = (GPIO_PORTN_PCTL_R & 0xFFFF0000) + 0x00000000;
     // disable analog functionality on PN3-0
-    GPIO_PORTN_AMSEL_R &= ~0x0F;     
+    //GPIO_PORTN_AMSEL_R &= ~0x0F;     
 }
 /*
  * Initialization of GPIO Port J, which are for the switiches. 
@@ -92,15 +92,15 @@ void init_GPIO_J(void) {
     // make PJ1-0 in (PJ1-0 built-in SW2-1)
     GPIO_PORTJ_AHB_DIR_R = 0;
     // disable alt funct on PJ1-0
-    GPIO_PORTJ_AHB_AFSEL_R = 0;
+    //GPIO_PORTJ_AHB_AFSEL_R = 0;
     // enable pull-up on PJ1-0
-    GPIO_PORTJ_AHB_PUR_R = 0x03;
+    GPIO_PORTJ_AHB_PUR_R = SW2;
     // enable digital I/O on PJ1-0         
-    GPIO_PORTJ_AHB_DEN_R = 0x03;
+    GPIO_PORTJ_AHB_DEN_R = SW2;
     // configure PJ1-0 as GPIO         
     GPIO_PORTJ_AHB_PCTL_R = 0;
     // disable analog functionality on PJ1-0           
-    GPIO_PORTJ_AHB_AMSEL_R = 0;                    
+    //GPIO_PORTJ_AHB_AMSEL_R = 0;                    
 }
 /*
  * Initialization of GPIO Port J Interrupt. 
