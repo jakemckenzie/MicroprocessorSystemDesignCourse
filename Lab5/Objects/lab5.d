@@ -1,0 +1,10 @@
+.\objects\lab5.o: lab5.c
+.\objects\lab5.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\lab5.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\lab5.o: tm4c1294ncpdt.h
+.\objects\lab5.o: hw_memmap.h
+.\objects\lab5.o: hw_types.h
+.\objects\lab5.o: sysctl.h
+.\objects\lab5.o: interrupt.h
+.\objects\lab5.o: gpio.h
+.\objects\lab5.o: timer.h
