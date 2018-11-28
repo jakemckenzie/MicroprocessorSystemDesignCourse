@@ -22,30 +22,36 @@ Dialog DLL:      TCM.DLL V1.36.1.0
  
 <h2>Project:</h2>
 C:\Users\iapetus\Documents\Github\MicroprocessorSystemDesignCourse\BlinkyD\blinkyd.uvprojx
-Project File Date:  11/23/2018
+Project File Date:  11/25/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.10.1', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
 linking...
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol GPIOPinRead (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol GPIOPinTypeGPIOOutput (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol GPIOPinWrite (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol IntEnable (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol IntMasterEnable (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol SysCtlClockGet (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol SysCtlClockSet (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol SysCtlPeripheralEnable (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol SysCtlPeripheralReady (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol TimerConfigure (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol TimerEnable (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol TimerIntClear (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol TimerIntEnable (referred from blinkyd.o).
-.\Objects\blinkyd.axf: Error: L6218E: Undefined symbol TimerLoadSet (referred from blinkyd.o).
+.\Objects\blinkyd.axf: Error: L6366E: gpio.obj attributes are not compatible with the provided attributes .
+Object gpio.obj contains Build Attributes that are incompatible with the provided attributes.
+    Tag_ABI_HardFP_use = Permitted VFP use is implied by Tag_FP_arch (=0)
+.\Objects\blinkyd.axf: Warning: L6869W: gpio.obj requested the Rogue Wave Standard C++ Library which has been removed from the product. This might cause link errors because libc++ is used instead.
+.\Objects\blinkyd.axf: Error: L6366E: interrupt.obj attributes are not compatible with the provided attributes .
+Object interrupt.obj contains Build Attributes that are incompatible with the provided attributes.
+    Tag_ABI_HardFP_use = Permitted VFP use is implied by Tag_FP_arch (=0)
+.\Objects\blinkyd.axf: Warning: L6869W: interrupt.obj requested the Rogue Wave Standard C++ Library which has been removed from the product. This might cause link errors because libc++ is used instead.
+.\Objects\blinkyd.axf: Error: L6366E: sysctl.obj attributes are not compatible with the provided attributes .
+Object sysctl.obj contains Build Attributes that are incompatible with the provided attributes.
+    Tag_ABI_HardFP_use = Permitted VFP use is implied by Tag_FP_arch (=0)
+.\Objects\blinkyd.axf: Warning: L6869W: sysctl.obj requested the Rogue Wave Standard C++ Library which has been removed from the product. This might cause link errors because libc++ is used instead.
+.\Objects\blinkyd.axf: Error: L6366E: timer.obj attributes are not compatible with the provided attributes .
+Object timer.obj contains Build Attributes that are incompatible with the provided attributes.
+    Tag_ABI_HardFP_use = Permitted VFP use is implied by Tag_FP_arch (=0)
+.\Objects\blinkyd.axf: Warning: L6869W: timer.obj requested the Rogue Wave Standard C++ Library which has been removed from the product. This might cause link errors because libc++ is used instead.
+.\Objects\blinkyd.axf: Error: L6366E: cpu.obj attributes are not compatible with the provided attributes .
+Object cpu.obj contains Build Attributes that are incompatible with the provided attributes.
+    Tag_ABI_HardFP_use = Permitted VFP use is implied by Tag_FP_arch (=0)
+.\Objects\blinkyd.axf: Warning: L6869W: cpu.obj requested the Rogue Wave Standard C++ Library which has been removed from the product. This might cause link errors because libc++ is used instead.
 Not enough information to list image symbols.
 Not enough information to list load addresses in the image map.
-Finished: 2 information, 0 warning and 14 error messages.
-".\Objects\blinkyd.axf" - 14 Error(s), 0 Warning(s).
+Finished: 12 information, 5 warning and 5 error messages.
+".\Objects\blinkyd.axf" - 5 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -71,11 +77,11 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.1.2
 
    * Component: Keil::Device:Startup:1.0.0
-      Source file:   Device\Source\ARM\startup_TM4C129.s
       Include file:  Device\Include\TM4C129\TM4C129.h
+      Source file:   Device\Source\ARM\startup_TM4C129.s
       Source file:   Device\Source\system_TM4C129.c
 Target not created.
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

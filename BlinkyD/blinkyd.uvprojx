@@ -388,6 +388,11 @@
               <FileType>1</FileType>
               <FilePath>.\blinkyd.c</FilePath>
             </File>
+            <File>
+              <FileName>driverlib.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>.\TivaWare_C_Series-2.1.4.178\driverlib\ccs\Debug\driverlib.lib</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

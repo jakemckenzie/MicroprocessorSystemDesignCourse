@@ -40,25 +40,34 @@
 // = 10,000 = 0x2710
 #define TIM_A_PRESCALE 0x0F // 1/16 prescaler
 int main ( void ){
-    // Configure Timer1 A periodic timer with timeout event interrupt
-    SYSCTL_RCGCTIMER_R ??? ; // Enable clock for timer 1
-    TIMER1_CFG_R ??? TIM_16_BIT_CONFIG ; // Configure 16- bit timer
-    TIMER1_TAMR_R ??? TIM_PERIODIC_MODE ;// Periodic count down
-    // Configure the timer reload value
-    TIMER1_TAILR_R = TIM_A_INTERVAL ;
-    TIMER1_TAPR_R = TIM_A_PRESCALE ;
-    // Timer1 A interrupt configuration
-    TIMER1_IMR_R ??? TIM_A_TIMEOUT_IM ;
-    NVIC_EN0_R = NVIC_EN0_INT21 ; // Enable INT 21 in NVIC
-    // Enable the timer
-    TIMER1_CTL_R ??? TIM_A_ENABLE ;
+    uint32_t ui32Period;
+	uint32_t ui32SysClkFreq;
 
+	ui32SysClkFreq = SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ | SYSCTL_OSC_MAIN | SYSCTL_USE_PLL | SYSCTL_CFG_VCO_480), 120000000);
+    
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPION);
+	SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
+
+    GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0|GPIO_PIN_1);
+    TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);
+
+    ui32Period = ui32SysClkFreq >> 1;
+	TimerLoadSet(TIMER1_BASE, TIMER_A, ui32Period - 1);
+    IntEnable(INT_TIMER1A);
+
+    TimerIntEnable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
+	IntMasterEnable();
+    TimerEnable(TIMER1_BASE, TIMER_A);
+    
     for (;;) {
         
-    }
+    }    
 }
 void Timer1A_Handler ( void ){
-    // Clear interrupt flag
-    TIMER1_ICR_R ??? TIM_A_TIMEOUT_IC;
-    // Perform other necessary tasks
+    TimerIntClear(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
+    if(GPIOPinRead(GPIO_PORTN_BASE, GPIO_PIN_1)) {
+		GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 0);
+	} else {
+		GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, 2);
+	}
 }
